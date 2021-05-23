@@ -1,0 +1,135 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdk 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.kabbodev.jetpackcomposepokedex"
+        minSdk 21
+        targetSdk 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+        useIR = true
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+
+}
+
+dependencies {
+    // Kotlin
+    def ktx_core = "1.5.0"
+    // Coroutines
+    def coroutines = '1.5.0-native-mt'
+    // UI
+    def app_compat = "1.3.0"
+    def material = "1.3.0"
+    // Compose
+    def constraint_layout_compose = "1.0.0-alpha07"
+    def activity_compose = "1.3.0-alpha08"
+    def nav_compose = "2.4.0-alpha01"
+    def view_model_compose = "1.0.0-alpha05"
+    // ViewModel and Live Data
+    def lifecycle_version = "2.3.1"
+    def arch_version = "2.1.0"
+    // Retrofit
+    def retrofit = "2.9.0"
+    // Okhttp3
+    def okhttp3 = "4.9.0"
+    // Coil
+    def coil = "1.2.1"
+    def accompanist_coil = "0.10.0"
+    // Testing
+    def jUnit = "4.13.2"
+    def jUnit_test = "1.1.2"
+    def espresso_core = "3.3.0"
+
+
+    // Kotlin
+    implementation "androidx.core:core-ktx:$ktx_core"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
+
+    // UI
+    implementation "androidx.appcompat:appcompat:$app_compat"
+    implementation "com.google.android.material:material:$material"
+    implementation 'com.android.support:palette-v7:28.0.0'
+
+    // Compose
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.material:material-icons-core:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.activity:activity-compose:$activity_compose"
+    implementation "androidx.constraintlayout:constraintlayout-compose:$constraint_layout_compose"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-compose:$nav_compose"
+
+    // ViewModel and Live Data
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$view_model_compose"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
+
+    // Okhttp3
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp3"))
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
+    // Dagger - Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha02'
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
+
+    // Coil
+    implementation("io.coil-kt:coil:$coil")
+    implementation "com.google.accompanist:accompanist-coil:$accompanist_coil"
+
+    // Testing
+    testImplementation "junit:junit:$jUnit"
+    testImplementation "androidx.arch.core:core-testing:$arch_version"
+    androidTestImplementation "androidx.test.ext:junit:$jUnit_test"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+}
