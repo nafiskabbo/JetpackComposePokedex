@@ -1,5 +1,6 @@
 package com.kabbodev.jetpackcomposepokedex.ui.screen.pokemonList
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -7,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,7 +23,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -30,21 +31,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import coil.request.ImageRequest
-import coil.transform.Transformation
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.imageloading.ImageLoadState
 import com.kabbodev.jetpackcomposepokedex.R
 import com.kabbodev.jetpackcomposepokedex.data.models.PokedexListEntry
-import com.kabbodev.jetpackcomposepokedex.data.remote.api.PokeApi
-import com.kabbodev.jetpackcomposepokedex.data.remote.repository.PokemonRepository
 import com.kabbodev.jetpackcomposepokedex.ui.theme.RobotoCondensed
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun ShowPokemonListScreen() {
-    PokemonListScreen(navController = rememberNavController())
+    RetrySection(error = "Please try again!") {
+
+    }
+//    PokemonListScreen(navController = rememberNavController())
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -75,19 +74,7 @@ fun PokemonListScreen(
 
             }
             Spacer(modifier = Modifier.height(20.dp))
-            LazyVerticalGrid(
-                cells = GridCells.Fixed(2),
-                contentPadding = PaddingValues(8.dp),
-            ) {
-                items(6) {
-                    PokedexEntry(
-                        PokedexListEntry("AYAN", "https://picsum.photos/300/300", 1),
-                        navController,
-                        Modifier
-                            .padding(8.dp)
-                    )
-                }
-            }
+            PokemonList(navController = navController)
         }
 
     }
@@ -131,6 +118,53 @@ fun SearchBar(
     }
 
 
+}
+
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun PokemonList(
+    navController: NavController,
+    viewModel: PokemonListViewModel = hiltViewModel()
+) {
+    val pokemonList by remember { viewModel.pokemonList }
+    val endReached by remember { viewModel.endReached }
+    val loadError by remember { viewModel.loadError }
+    val isLoading by remember { viewModel.isLoading }
+
+    LazyVerticalGrid(
+        cells = GridCells.Fixed(2),
+        contentPadding = PaddingValues(8.dp),
+    ) {
+        itemsIndexed(pokemonList) { index: Int, item: PokedexListEntry ->
+            Log.d("AYAN", "PokemonList: $index")
+            Log.d("AYAN", "PokemonList: ${pokemonList.size}")
+            if (index >= pokemonList.size - 1 && !endReached) {
+                viewModel.loadPokemonList()
+            }
+
+            PokedexEntry(
+                item,
+                navController,
+                Modifier
+                    .padding(8.dp)
+            )
+        }
+    }
+
+    Box(
+        contentAlignment = Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        if (isLoading) {
+            CircularProgressIndicator()
+        }
+        if (loadError.isNotEmpty()) {
+            RetrySection(error = loadError) {
+                viewModel.loadPokemonList()
+            }
+        }
+    }
 }
 
 
@@ -216,4 +250,25 @@ fun PokedexEntry(
     }
 
 
+}
+
+@Composable
+fun RetrySection(
+    error: String,
+    onRetry: () -> Unit
+) {
+    Column {
+        Text(
+            text = error,
+            color = Color.Red,
+            fontSize = 18.sp
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = { onRetry() },
+            modifier = Modifier.align(CenterHorizontally)
+        ) {
+            Text(text = "Retry")
+        }
+    }
 }
