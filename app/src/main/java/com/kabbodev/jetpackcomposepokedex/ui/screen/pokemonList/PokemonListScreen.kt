@@ -40,16 +40,14 @@ import com.kabbodev.jetpackcomposepokedex.ui.theme.RobotoCondensed
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun ShowPokemonListScreen() {
-    RetrySection(error = "Please try again!") {
-
-    }
 //    PokemonListScreen(navController = rememberNavController())
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PokemonListScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: PokemonListViewModel = hiltViewModel()
 ) {
     Surface(
         color = MaterialTheme.colors.background,
@@ -71,7 +69,7 @@ fun PokemonListScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-
+                viewModel.searchPokemonList(it)
             }
             Spacer(modifier = Modifier.height(20.dp))
             PokemonList(navController = navController)
@@ -131,6 +129,7 @@ fun PokemonList(
     val endReached by remember { viewModel.endReached }
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
+    val isSearching by remember { viewModel.isSearching }
 
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
@@ -139,7 +138,7 @@ fun PokemonList(
         itemsIndexed(pokemonList) { index: Int, item: PokedexListEntry ->
             Log.d("AYAN", "PokemonList: $index")
             Log.d("AYAN", "PokemonList: ${pokemonList.size}")
-            if (index >= pokemonList.size - 1 && !endReached) {
+            if (index >= pokemonList.size - 1 && !endReached && !isLoading && !isSearching) {
                 viewModel.loadPokemonList()
             }
 

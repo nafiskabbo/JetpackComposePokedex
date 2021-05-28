@@ -13,6 +13,7 @@ import com.kabbodev.jetpackcomposepokedex.data.remote.config.Constants.PAGE_SIZE
 import com.kabbodev.jetpackcomposepokedex.data.remote.repository.PokemonRepository
 import com.kabbodev.jetpackcomposepokedex.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -28,8 +29,39 @@ class PokemonListViewModel @Inject constructor(
     var isLoading = mutableStateOf(false)
     var endReached = mutableStateOf(false)
 
+    private var cachedPokemonList = arrayListOf<PokedexListEntry>()
+    private var isSearchStarting = true
+    var isSearching = mutableStateOf(false)
+
     init {
         loadPokemonList()
+    }
+
+    fun searchPokemonList(query: String) {
+        val listToSearch = if (isSearchStarting) {
+            pokemonList.value
+        } else {
+            cachedPokemonList
+        }
+
+        viewModelScope.launch(Dispatchers.Default) {
+            if (query.isBlank()) {
+                pokemonList.value = cachedPokemonList
+                isSearching.value = false
+                isSearchStarting = true
+                return@launch
+            }
+
+            val results = listToSearch.filter {
+                it.pokemonName.contains(query.trim(), ignoreCase = true) || it.number.toString() == query.trim()
+            }
+            if (isSearchStarting) {
+                cachedPokemonList = pokemonList.value
+                isSearchStarting = false
+            }
+            pokemonList.value = results as ArrayList<PokedexListEntry>
+            isSearching.value = true
+        }
     }
 
     fun loadPokemonList() {

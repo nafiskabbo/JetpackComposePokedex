@@ -50,7 +50,7 @@ dependencies {
     // Kotlin
     def ktx_core = "1.5.0"
     // Coroutines
-    def coroutines = '1.5.0-native-mt'
+    def coroutines = '1.5.0'
     // UI
     def app_compat = "1.3.0"
     def material = "1.3.0"
