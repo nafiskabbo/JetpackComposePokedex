@@ -1,6 +1,6 @@
-package com.kabbodev.jetpackcomposepokedex.repository
+package com.kabbodev.jetpackcomposepokedex.data.remote.repository
 
-import com.kabbodev.jetpackcomposepokedex.data.remote.PokeApi
+import com.kabbodev.jetpackcomposepokedex.data.remote.api.PokeApi
 import com.kabbodev.jetpackcomposepokedex.data.remote.responses.Pokemon
 import com.kabbodev.jetpackcomposepokedex.data.remote.responses.PokemonList
 import com.kabbodev.jetpackcomposepokedex.utils.Resource

@@ -1,7 +1,13 @@
 package com.kabbodev.jetpackcomposepokedex.data.remote.responses
 
+
+import com.google.gson.annotations.SerializedName
+
 data class GenerationIii(
+    @SerializedName("emerald")
     val emerald: Emerald,
-    val firered-leafgreen: FireredLeafgreen,
-    val ruby-sapphire: RubySapphire
+    @SerializedName("firered-leafgreen")
+    val fireredLeafgreen: FireredLeafgreen,
+    @SerializedName("ruby-sapphire")
+    val rubySapphire: RubySapphire
 )

@@ -1,6 +1,11 @@
 package com.kabbodev.jetpackcomposepokedex.data.remote.responses
 
+
+import com.google.gson.annotations.SerializedName
+
 data class Emerald(
-    val front_default: String,
-    val front_shiny: String
+    @SerializedName("front_default")
+    val frontDefault: String,
+    @SerializedName("front_shiny")
+    val frontShiny: String
 )

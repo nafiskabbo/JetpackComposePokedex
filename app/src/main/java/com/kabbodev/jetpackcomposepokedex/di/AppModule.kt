@@ -1,8 +1,8 @@
 package com.kabbodev.jetpackcomposepokedex.di
 
-import com.kabbodev.jetpackcomposepokedex.config.Constants.BASE_URL
-import com.kabbodev.jetpackcomposepokedex.data.remote.PokeApi
-import com.kabbodev.jetpackcomposepokedex.repository.PokemonRepository
+import com.kabbodev.jetpackcomposepokedex.data.remote.config.Constants.BASE_URL
+import com.kabbodev.jetpackcomposepokedex.data.remote.api.PokeApi
+import com.kabbodev.jetpackcomposepokedex.data.remote.repository.PokemonRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

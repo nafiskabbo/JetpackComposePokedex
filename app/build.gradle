@@ -85,7 +85,7 @@ dependencies {
     // UI
     implementation "androidx.appcompat:appcompat:$app_compat"
     implementation "com.google.android.material:material:$material"
-    implementation 'com.android.support:palette-v7:28.0.0'
+    implementation "androidx.palette:palette-ktx:1.0.0"
 
     // Compose
     implementation "androidx.compose.ui:ui:$compose_version"

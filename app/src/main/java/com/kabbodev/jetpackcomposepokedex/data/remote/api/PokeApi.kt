@@ -1,4 +1,4 @@
-package com.kabbodev.jetpackcomposepokedex.data.remote
+package com.kabbodev.jetpackcomposepokedex.data.remote.api
 
 import com.kabbodev.jetpackcomposepokedex.data.remote.responses.Pokemon
 import com.kabbodev.jetpackcomposepokedex.data.remote.responses.PokemonList

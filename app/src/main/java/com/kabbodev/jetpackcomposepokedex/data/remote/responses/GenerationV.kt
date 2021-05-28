@@ -1,5 +1,9 @@
 package com.kabbodev.jetpackcomposepokedex.data.remote.responses
 
+
+import com.google.gson.annotations.SerializedName
+
 data class GenerationV(
-    val black-white: BlackWhite
+    @SerializedName("black-white")
+    val blackWhite: BlackWhite
 )
